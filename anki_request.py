@@ -11,7 +11,7 @@ class AnkiRequest:
         fields = {'Kanji': cur_word[0],
                   'Hiragana': cur_word[1], 'English': cur_word[2]}
 
-        audio_json = {'url': 'mp3/{}.mp3'.format(cur_word[1]), 'filename': '{}.mp3'.format(cur_word[1]),
+        audio_json = {'url': 'https://raw.githubusercontent.com/maxengel99/japanese-anki-automation/master/mp3/{}.mp3'.format(cur_word[1]), 'filename': '{}.mp3'.format(cur_word[1]),
                       'fields': ['Audio']}
         deck_name = 'Japanese Vocab'
         model_name = 'Japanese Vocab'
