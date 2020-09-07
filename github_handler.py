@@ -18,12 +18,15 @@ class GithubHandler:
         print("Initializing repo")
 
         repo = Repo(self.git_repo_path)
-        changed = [item.a_path for item in repo.index.diff(None)]
+        changed = [item.a_path for item in repo.index.diff(
+            None) if item.a_path.endswith('.mp3')]
+        untracked_files = [
+            path for path in repo.untracked_files if path.endswith('.mp3')]
 
         print("Adding and committing changes")
 
         repo.index.add(changed)
-        repo.index.add(repo.untracked_files)
+        repo.index.add(untracked_files)
         repo.index.commit(commit_messge)
 
         print("Pushing changes")
