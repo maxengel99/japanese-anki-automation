@@ -6,20 +6,15 @@ import urllib.request
 class AnkiRequest:
     """Handles interaction with anki"""
 
-    def generate_json(self, category, khmer, english='none'):
+    def generate_json(self, cur_word):
         """Create json for anki"""
-        fields = ({'Word': khmer} if category == 'letter'
-                  else {'Khmer': khmer, 'English': english})
-        audio_url = (('https://raw.githubusercontent.com/maxengel99/'
-                      'khmer-letter-anki/master/files/letters/{}.mp3'.format(khmer)) if category == 'letter'
-                     else ('https://raw.githubusercontent.com/maxengel99/'
-                           'khmer-letter-anki/master/files/words/{}.mp3'.format(khmer)))
-        audio_json = {'url': audio_url, 'filename': '{}.mp3'.format(khmer),
+        fields = {'Kanji': cur_word[0],
+                  'Hiragana': cur_word[1], 'English': cur_word[2]}
+
+        audio_json = {'url': 'mp3/{}.mp3'.format(cur_word[1]), 'filename': '{}.mp3'.format(cur_word[1]),
                       'fields': ['Audio']}
-        deck_name = ('Khmer - Letters + Vowels::Khmer Letters' if category == 'letter'
-                     else 'Khmer Vocabulary - Khmer')
-        model_name = ('Basic - Word/Audio' if category == 'letter'
-                      else 'Khmer Vocabulary')
+        deck_name = 'Japanese Vocab'
+        model_name = 'Japanese Vocab'
         json_args = {'deckName': deck_name, 'modelName': model_name,
                      'fields': fields, 'options': {'allowDuplicate': False},
                      'tags': [], 'audio': audio_json}

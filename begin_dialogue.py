@@ -4,6 +4,7 @@ import easygui
 from anki_request import AnkiRequest
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
+from github_handler import GithubHandler
 import json
 
 
@@ -11,7 +12,7 @@ def get_text_file():
     '''Read in textfile from user and returns content'''
 
     vocab_file_name = easygui.fileopenbox(
-        "Please upload a textfile of the new vocabulary.")
+        "Please upload a textfile of the new vocabulary")
     vocab_file_open = (
         open(vocab_file_name, 'r', encoding='utf8', errors='ignore'))
 
@@ -37,7 +38,7 @@ def create_audio(word):
     filename = 'mp3/{}.mp3'.format(word)
 
     with open(filename, "wb") as file:
-        print('writing file {}'.format(filename))
+        print('Writing file {}'.format(filename))
         file.write(doc.content)
         print("File writing completed for " + word)
 
@@ -45,7 +46,9 @@ def create_audio(word):
 def create_and_save_info(vocab_info):
     '''Create and saves audio files to ./mp3'''
 
+    github_handler = GithubHandler()
     processes = []
+
     with ThreadPoolExecutor(max_workers=10) as executor:
         for cur_word in vocab_info:
             hiragana_word = cur_word[1]
@@ -60,14 +63,17 @@ def create_and_save_info(vocab_info):
     for task in as_completed(processes):
         print(task.result())
 
+    commit_message = easygui.enterbox()
+    github_handler.add_to_github(commit_message)
+
 
 def add_vocab_to_anki(vocab_info):
     '''Adds vocab and audio to anki deck, must have anki open'''
 
     anki_request = AnkiRequest()
 
-    for pair in vocab_info:
-        anki_arg = anki_request.generate_json('words', pair[0], pair[1])
+    for cur_word in vocab_info:
+        anki_arg = anki_request.generate_json(cur_word)
         response = anki_request.invoke(anki_arg)
         print(response)
 
