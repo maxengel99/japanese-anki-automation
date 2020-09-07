@@ -6,17 +6,18 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 from github_handler import GithubHandler
 import json
+import csv
 
 
 def get_text_file():
     '''Read in textfile from user and returns content'''
 
     vocab_file_name = easygui.fileopenbox(
-        "Please upload a textfile of the new vocabulary")
-    vocab_file_open = (
-        open(vocab_file_name, 'r', encoding='utf8', errors='ignore'))
+        "Please upload a csv file of the new vocabulary")
 
-    return vocab_file_open.readlines()
+    with open(vocab_file_name, newline='', encoding='utf8', errors='ignore') as f:
+        reader = csv.reader(f)
+        return list(reader)
 
 
 def parse_vocab_content(vocab_file_content):
@@ -86,15 +87,14 @@ def begin():
     print("Beginning dialogue")
 
     vocab_file_content = get_text_file()
-    vocab_info = parse_vocab_content(vocab_file_content)
 
     print('Creating audio')
 
-    create_and_save_info(vocab_info)
+    create_and_save_info(vocab_file_content)
 
     print('Adding to Anki deck')
 
-    add_vocab_to_anki(vocab_info)
+    add_vocab_to_anki(vocab_file_content)
 
     user_continue = easygui.ynbox(
         "Would you like to perform another command?", choices=("Yes", "No"))
