@@ -51,14 +51,14 @@ def create_and_save_info(vocab_info):
 
     with ThreadPoolExecutor(max_workers=10) as executor:
         for cur_word in vocab_info:
-            hiragana_word = cur_word[1]
+            kanji_word = cur_word[0]
 
-            if not os.path.isfile('mp3/{}.mp3'.format(hiragana_word)):
-                print('Adding audio for {}'.format(hiragana_word))
+            if not os.path.isfile('mp3/{}.mp3'.format(kanji_word)):
+                print('Adding audio for {}'.format(kanji_word))
                 processes.append(executor.submit(
-                    create_audio, hiragana_word))
+                    create_audio, kanji_word))
             else:
-                print('Skipping word - {}'.format(hiragana_word))
+                print('Skipping word - {}'.format(kanji_word))
 
     for task in as_completed(processes):
         print(task.result())
