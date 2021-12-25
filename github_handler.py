@@ -32,4 +32,5 @@ class GithubHandler:
         print("Pushing changes")
 
         origin = repo.remote(name="origin")
+        print("added origin")
         origin.push()

@@ -13,7 +13,7 @@ class AnkiRequest:
 
         audio_json = {'url': 'https://raw.githubusercontent.com/maxengel99/japanese-anki-automation/master/mp3/{}.mp3'.format(cur_word[0]), 'filename': '{}.mp3'.format(cur_word[0]),
                       'fields': ['Audio']}
-        deck_name = 'Japanese Vocab'
+        deck_name = 'iTalki + common words'
         model_name = 'Japanese Vocab-690b6'
         json_args = {'deckName': deck_name, 'modelName': model_name,
                      'fields': fields, 'options': {'allowDuplicate': False},

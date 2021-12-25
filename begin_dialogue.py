@@ -52,6 +52,7 @@ def create_and_save_info(vocab_info):
 
     with ThreadPoolExecutor(max_workers=10) as executor:
         for cur_word in vocab_info:
+            print(cur_word)
             kanji_word = cur_word[0]
 
             if not os.path.isfile('mp3/{}.mp3'.format(kanji_word)):
